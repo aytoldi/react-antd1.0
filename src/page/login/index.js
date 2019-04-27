@@ -182,6 +182,8 @@ let putAction = {
     }
 }
 
+// rodipay: uyghur lar ning yalikisga qikwalgan tayyar tap
+
 export default connect(//将react与redux关联起来
     state => ({...state}),//获取redux中的状态，指定对应的接收props名字
     {...putAction}//绑定action中更新状态的方法
