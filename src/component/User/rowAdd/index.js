@@ -125,7 +125,7 @@ class RowAdd extends React.Component {
         console.log(e);
         this.setState({
             _visible1: false,
-            _initValue1:{}
+            _initValue1: {}//隐藏以后初始化
         });
     }
 
@@ -149,7 +149,7 @@ class RowAdd extends React.Component {
         console.log(e);
         this.setState({
             _visible2: false,
-            _initValue1:{}
+            _initValue1: {}//隐藏以后初始化
         });
     }
 
@@ -161,10 +161,12 @@ class RowAdd extends React.Component {
         if (num === 1) {
             this.setState({
                 _visible1: false,
+                _initValue1: {}
             });
         } else {
             this.setState({
                 _visible2: false,
+                _initValue1: {}
             });
         }
 
@@ -281,9 +283,9 @@ class FormContainer extends React.Component {
 
 
     CancelHanlde() {
-        this.props.form.resetFields();
         this.props.hideModal(false, 1);
         this.props.hideModal(false, 2);
+        this.props.form.resetFields();
     }
 
 

@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7952660e-f881-465c-b8fa-e6e83e2427a0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/component/User/rowLink/add.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/component/User/rowLink/edit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/component/User/pageList/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/User/pageList/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/component/User/rowAdd/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/User/rowAdd/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/component/User/rowLink/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/User/rowLink/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page/home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/page/home/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page/login/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/page/login/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/PrivateRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/http.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/url.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -79,8 +66,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/component/User/rowAdd/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="151" column="26" selection-start-line="151" selection-start-column="26" selection-end-line="151" selection-end-column="26" />
+            <state relative-caret-position="289">
+              <caret line="159" column="33" lean-forward="true" selection-start-line="159" selection-start-column="33" selection-end-line="159" selection-end-column="33" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#216#260#0" expanded="true" />
@@ -135,7 +122,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Page</find>
       <find>echa</find>
       <find>router</find>
       <find>apiUrl</find>
@@ -161,10 +147,11 @@
       <find>hideMo</find>
       <find>cancel</find>
       <find>hideModal</find>
-      <find>CancelHanlde</find>
       <find>add</find>
       <find>addHandle</find>
       <find>cancelH</find>
+      <find>CancelHanlde</find>
+      <find>initialValue</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -354,12 +341,12 @@
       <workItem from="1556523466843" duration="131000" />
       <workItem from="1556528184735" duration="6616000" />
       <workItem from="1556542422501" duration="18053000" />
-      <workItem from="1556713231420" duration="4091000" />
+      <workItem from="1556713231420" duration="5337000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54453000" />
+    <option name="totallyTimeSpent" value="55699000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -666,8 +653,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/component/User/rowAdd/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="151" column="26" selection-start-line="151" selection-start-column="26" selection-end-line="151" selection-end-column="26" />
+        <state relative-caret-position="289">
+          <caret line="159" column="33" lean-forward="true" selection-start-line="159" selection-start-column="33" selection-end-line="159" selection-end-column="33" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#216#260#0" expanded="true" />
