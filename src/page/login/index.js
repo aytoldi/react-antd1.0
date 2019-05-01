@@ -15,7 +15,6 @@ import qs from 'qs';
 import Banner from '../../assets/img/logo.png'
 import history from '../../router/history'
 import apiUrl from '../../utils/request'
-import request from '../../utils/url'
 import styles from './index.less'
 
 class Login extends React.Component {
@@ -23,15 +22,17 @@ class Login extends React.Component {
     //Form是子类，所以使用子组件到父组件传递值，所以使用回调函数s
     handleValue = (value) => {
         this.props.submitHandle(value).then((res) => {
-            console.log(res,62);
-            if(res.data.code===0){
-                console.log(1512);
+            if (res.data.code === 0) {
                 history.replace('/home');
-           }
+            }
         })
     }
 
     render() {
+        console.log(this.props.location.pathname,12);
+        if (this.props.token && this.props.location.pathname === '/') {
+            history.replace('/home')
+        }
         return (
             <React.Fragment>
                 <div className={styles.container}>
@@ -65,17 +66,6 @@ class FormContainer extends React.Component {
         this.props.form.validateFields((err, value) => {
             if (!err) {
                 self.props.handleValue(value);
-                // self.props.handleValue(value);
-                // axios.post(request.loginUrl, qs.stringify(value)).then((res) => {
-                //     console.log(res.data.data, 'ss');
-                //     let {data: {data}} = res;
-                //     if (res.data.code === 0) {
-                //         history.replace('/home');
-                //         window.localStorage.setItem('token', data.token);
-                //     } else {
-                //         message.info(res.data.error);
-                //     }
-                // })
             }
         })
     }

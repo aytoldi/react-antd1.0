@@ -18,17 +18,19 @@ import Todo from '../component/todo'
 let history = createHashHistory();
 
 class App extends React.Component {
+
     render() {
+
         return (
             <React.Fragment>
                 <Router history={history}>
                     <ContainerPage>
                         <Switch>
-                            <Route exact path={'/login'} component={Login}/>
+                            <Route exact path={'/'} component={Login}/>
                             <Route path="/home">
                                 <Home>
                                     <Switch>
-                                        <PrivateRoute path={'/home/pageList'} component={PageList}/>
+                                        <PrivateRoute exact path={'/home'} component={PageList}/>
                                         <PrivateRoute path={'/home/innerEdit'} component={InnerEdit}/>
                                         <PrivateRoute path={'/home/rowEdit'} component={RowEdit}/>
                                         <PrivateRoute path={'/home/rowAdd'} component={RowAdd}/>
@@ -41,7 +43,7 @@ class App extends React.Component {
                                     </Switch>
                                 </Home>
                             </Route>
-                            <Redirect to={'/login'}/>
+                            <Redirect to={'/'}/>
                         </Switch>
                     </ContainerPage>
                 </Router>
@@ -50,4 +52,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default App

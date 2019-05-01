@@ -125,7 +125,6 @@ class RowAdd extends React.Component {
         console.log(e);
         this.setState({
             _visible1: false,
-            _initValue1:{}
         });
     }
 
@@ -149,7 +148,6 @@ class RowAdd extends React.Component {
         console.log(e);
         this.setState({
             _visible2: false,
-            _initValue1:{}
         });
     }
 
@@ -157,17 +155,10 @@ class RowAdd extends React.Component {
         this._showModal2();
     }
 
-    hideModal = (state, num) => {
-        if (num === 1) {
-            this.setState({
-                _visible1: false,
-            });
-        } else {
-            this.setState({
-                _visible2: false,
-            });
-        }
-
+    hideModal = () => {
+        this.setState({
+            _visible2: false,
+        });
     }
 
 
@@ -185,7 +176,7 @@ class RowAdd extends React.Component {
                     footer={null}
                 >
                     <div>
-                        <FormContainer hideModal={this.hideModal} formContent={this.state._initValue1}/>
+                        <FormContainer formContent={this.state._initValue1}/>
                     </div>
                 </Modal>
                 <Modal
@@ -255,7 +246,7 @@ class FormContainer extends React.Component {
                 service.linkAdd(addApply).then((res) => {
                     if (res.data.code === 0) {
                         history.replace('/home/rowAdd');
-                        self.props.hideModal(false, 1);
+                        self.props.hideModal();
                         self.props.form.resetFields();
                     }
                 })
@@ -282,8 +273,7 @@ class FormContainer extends React.Component {
 
     CancelHanlde() {
         this.props.form.resetFields();
-        this.props.hideModal(false, 1);
-        this.props.hideModal(false, 2);
+        this.props.hideModal();
     }
 
 
@@ -355,10 +345,10 @@ class FormContainer extends React.Component {
                                         //     min:5, max: 10,
                                         //     message: '长度不在范围内'
                                         // },
-                                        // {
-                                        //     pattern: /^\w+$/,
-                                        //     message: '用户名必须为字母或数字'
-                                        // }
+                                        {
+                                            pattern: /^\w+$/,
+                                            message: '用户名必须为字母或数字'
+                                        }
                                     ],
                                     initialValue: city || ''
                                 })(

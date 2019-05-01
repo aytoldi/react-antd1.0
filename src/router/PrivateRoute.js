@@ -14,13 +14,14 @@ class PrivateRoute extends React.Component {
         this.setState({isAuth: isAuthenticated});
         if (!isAuthenticated) {
             setTimeout(() => {
-                history.replace('/login');
+                history.replace('/');
             }, 500)
         }
     }
 
     render() {
-        let {component: Component, path = "/login", exact = false, strict = false} = this.props;
+        console.log(this.props, '获取props');
+        let {component: Component, path = "/", exact = false, strict = false} = this.props;
         return this.state.isAuth ? (
             <Route path={path} exact={exact} strict={strict} render={(props) => (<Component {...props} />)}/>
         ) : ("请重新登录");

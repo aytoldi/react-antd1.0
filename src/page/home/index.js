@@ -24,6 +24,7 @@ export default class Home extends React.Component {
     }
 
     render() {
+
         return (
             <React.Fragment>
                 <Layout style={{minHeight: '100vh'}}>
@@ -39,7 +40,7 @@ export default class Home extends React.Component {
                                 title={<span><Icon type="team"/><span>用户中心</span></span>}
                             >
                                 <Menu.Item key="1">
-                                    <Link to="/home/pageList">基本信息</Link>
+                                    <Link to="/home">基本信息</Link>
                                 </Menu.Item>
                                 <Menu.Item key="2">
                                     <Link to="/home/innerEdit">内部编辑</Link>
