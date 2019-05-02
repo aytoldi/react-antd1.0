@@ -1,105 +1,233 @@
 import React from 'react';
-import {Table, Button, Row} from 'antd'
-import service from '../../../utils/service'
+import {Button, Form, Input, Row, Col, DatePicker, Radio, Select} from 'antd'
+// 时间选择汉化
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 
-class RowLink extends React.Component {
+moment.locale('zh-cn')
+import service from '../../../utils/service'
+import {createHashHistory} from 'history'//引入历史
+const history = createHashHistory();
+
+
+class FormContainer extends React.Component {
+
     constructor(props) {
         super(props);
+        console.log(this.props.formContent, 91);
         this.state = {
-            //thead
-            _columns1: [
-                {
-                    title: 'Id',
-                    key: 'id',
-                    dataIndex: 'id',
-                },
-                {
-                    title: '姓名',
-                    key: 'name',
-                    dataIndex: 'name',
-                }, {
-                    title: '城市',
-                    key: 'city',
-                    dataIndex: 'city',
-                    render: (index, row) => {
-                        if (row.city === 1) {
-                            return ('span', 'New York')
-                        } else if (row.city === 2) {
-                            return ('span', 'London')
-                        } else if (row.city === 3) {
-                            return ('span', 'America')
-                        }
-                    }
-                }, {
-                    title: '日期',
-                    key: 'date',
-                    dataIndex: 'date',
-                    align: 'center'
-                },
-                {
-                    title: '性别',
-                    key: 'sex',
-                    dataIndex: 'sex',
-                    render: (text, record) => {
-                        if (record.sex === 0) {
-                            return ('男')
-                        } else {
-                            return ('女')
-                        }
-                    }
-                },
-                {
-                    title: '操作',
-                    key: '4',
-                    dataIndex: 'operation',
-                    render: (text, record, index) => {
-                        return (<Row><Button>编辑</Button><Button>删除</Button></Row>)
-                    }
-                }
-            ],
-            _dataSource1: [],//数据源
+            _formContent1: {
+                name: '',
+                city: 0,
+                date: new Date(),
+                sex: 0,
+            }
         }
+
     }
 
 
     componentDidMount() {
-        this.getData({
-            page: 1,
-            pageSize: 10
-        });
-    }
-
-    getData = (initParams) => {
-        service.renderPageList({...initParams}).then((res) => {
-            let newData = res.data.list.map((item, index) => {
-                item.key = item.id;
-                return item;
-            });
-
+        let match = this.props.match.params;
+        console.log(match, "match id...");
+        //我是second页面，路由id 是 {mathc.id}
+        service.linkEdit({id: match.id}).then((res) => {
+            console.log(res.data.data, 55);
             this.setState({
-                _dataSource1: newData
+                _formContent1: res.data.data
             })
         })
     }
 
+    _userValidator = (rule, value, callback) => {
+        let reg = /^[\u4E00-\u9FA5]+$/;
+
+        if (!value) {
+            return callback("请输入名称");
+        } else if (!reg.test(value)) {
+            return callback("请输入正确的名称")
+        } else {
+            callback();
+        }
+    }
+
+    handleForm() {
+        let self = this;
+        this.props.form.validateFields((err, value) => {
+            if (!err) {
+                let d = new Date(value.date);
+                let youWant = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+                let addApply = {...value, date: youWant};
+
+                service.linkAdd(addApply).then((res) => {
+                    if (res.data.code === 0) {
+                        history.replace('/home/rowLink');
+                        self.props.form.resetFields();
+                    }
+                })
+            }
+        })
+    }
+
+    //设置日期
+    disabledEndDate = (endValue) => {
+        let me = this;
+        const startValue = this.state.currentTime;
+        if (!endValue || !startValue) {
+            return false;
+        }
+        return endValue.valueOf() <= startValue.valueOf();
+    }
+    handleEndOpenChange = (open) => {
+        let self = this
+        if (open) {
+            self.currentTime = moment();
+        }
+        this.setState({currentTime: moment()});
+    }
+
+    restForm() {
+        this.props.form.resetFields();
+        // this.setState({
+        //     _formContent1:{}
+        // })
+    }
+
 
     render() {
-        //destroyOnClose 非常重要的属性 ,编辑的时候请求输入框的值
+
+        let {
+            city,
+            date,
+            name,
+            sex,
+        } = this.state._formContent1;
+
+        if (city === 1) {
+            city = 'New York';
+        } else if (city === 2) {
+            city = 'London'
+        } else if (city === 3) {
+            city = 'America';
+        } else {
+            city = '';
+        }
+
+
+        let {getFieldDecorator} = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+                xs: {span: 24},
+                sm: {span: 4},
+            },
+            wrapperCol: {
+                xs: {span: 24},
+                sm: {span: 20},
+            },
+        };
+        let self = this;
+
+
         return (
-            <div>
-                <Button onClick={() => this.addHandle()} style={{'marginBottom': '20px'}} type={"primary"}>添加</Button>
-                <Table
-                    //表格数据
-                    dataSource={this.state._dataSource1}
-                    //表格列名
-                    columns={this.state._columns1}
-                    bordered={true}
-                    rowKey={record => record.id}
-                />
-            </div>
+            <Form {...formItemLayout} layout="vertical">
+                <Row>
+                    <Col span={10} offset={1}>
+                        <Form.Item label="姓名">
+                            {
+                                getFieldDecorator('name',
+                                    {
+                                        rules: [
+                                            {
+                                                required: true, message: '请输入正确的姓名'
+                                            },
+                                            {
+                                                validator: this._userValidator
+                                            }
+                                        ],
+                                        initialValue: name || ''
+                                    })(
+                                    <Input placeholder="Username"/>
+                                )}
+                        </Form.Item>
+                        <Form.Item label="城市">
+                            {getFieldDecorator('city',
+
+                                {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: '城市不能为空'
+                                        },
+                                        // {
+                                        //     min:5, max: 10,
+                                        //     message: '长度不在范围内'
+                                        // },
+                                        {
+                                            pattern: /^\w+$/,
+                                            message: '用户名必须为字母或数字'
+                                        }
+                                    ],
+                                    initialValue: city || ''
+                                })(
+                                <Select>
+                                    <Select.Option value="1">New York</Select.Option>
+                                    <Select.Option value="2">London</Select.Option>
+                                    <Select.Option value="3">America</Select.Option>
+                                </Select>
+                            )}
+                        </Form.Item>
+                        <Form.Item label="日期">
+                            {getFieldDecorator('date',
+                                {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: '日期不能为空'
+                                        }
+                                    ],
+                                    initialValue: moment(date || new Date(), 'YYYY-MM-DD') || moment()
+                                })(
+                                <DatePicker
+                                    disabledDate={this.disabledEndDate}
+                                    onOpenChange={this.handleEndOpenChange}
+                                    format={'YYYY-MM-DD'}
+                                />
+                            )}
+                        </Form.Item>
+                        <Form.Item label="性别">
+                            {
+                                getFieldDecorator(
+                                    'sex',
+                                    {
+                                        rules: [{required: true, message: '性别不能为空'}],
+                                        initialValue: sex || 0
+                                    }
+                                )
+                                (
+                                    <Radio.Group>
+                                        <Radio value={0}>男</Radio>
+                                        <Radio value={1}>女</Radio>
+                                    </Radio.Group>
+                                )
+                            }
+                        </Form.Item>
+                        <Form.Item>
+                            <Row>
+                                <Col span={10}>
+                                    <Button type="primary" block onClick={() => this.handleForm()}>提交</Button>
+                                </Col>
+                                <Col span={10} offset={4}>
+                                    <Button type="primary" block onClick={() => this.restForm()}>重置</Button>
+                                </Col>
+                            </Row>
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
         )
     }
 }
 
+FormContainer = Form.create()(FormContainer);
 
-export default RowLink;
+export default FormContainer;

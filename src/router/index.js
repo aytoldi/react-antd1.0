@@ -10,6 +10,9 @@ import InnerEdit from "../component/User/innerEdit";
 import RowEdit from "../component/User/rowEdit";
 import RowAdd from "../component/User/rowAdd";
 import RowLink from "../component/User/rowLink";
+import LinkAdd from "../component/User/rowLink/add";
+import LinkEdit from "../component/User/rowLink/edit";
+import LinkWatch from "../component/User/rowLink/watch";
 import BoxChart from "../component/Chart/box";
 import LineChart from "../component/Chart/line";
 import CircleChart from "../component/Chart/circle";
@@ -20,7 +23,13 @@ let history = createHashHistory();
 class App extends React.Component {
 
     render() {
+        /*
+        <PrivateRoute path={'/home/linkEdit/:id'} component={LinkEdit}/>
+        http://localhost:8080/#/home/linkEdit/2
 
+        <PrivateRoute path={'/home/linkWatch/:id'} component={LinkWatch}/>
+          http://localhost:8080/#/home/linkWatch/3
+        */
         return (
             <React.Fragment>
                 <Router history={history}>
@@ -35,6 +44,9 @@ class App extends React.Component {
                                         <PrivateRoute path={'/home/rowEdit'} component={RowEdit}/>
                                         <PrivateRoute path={'/home/rowAdd'} component={RowAdd}/>
                                         <PrivateRoute path={'/home/rowLink'} component={RowLink}/>
+                                        <PrivateRoute path={'/home/linkAdd'} component={LinkAdd}/>
+                                        <PrivateRoute path={'/home/linkEdit/:id'} component={LinkEdit}/>
+                                        <PrivateRoute path={'/home/linkWatch/:id'} component={LinkWatch}/>
                                         <PrivateRoute path={'/home/box'} component={BoxChart}/>
                                         <PrivateRoute path={'/home/line'} component={LineChart}/>
                                         <PrivateRoute path={'/home/circle'} component={CircleChart}/>
