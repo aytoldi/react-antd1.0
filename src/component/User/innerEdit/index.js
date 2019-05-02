@@ -133,9 +133,12 @@ class InnerEdit extends React.Component {
 
     //正确
     checkHandle(text, record, index) {
-        this.state._dataSource1[index].name = this.state.editVal;//会改变
-        this.state._dataSource1[index].flag = false;
-        this.setState({})
+        if(this.state.editVal){
+            this.state._dataSource1[index].name = this.state.editVal;//会改变
+            this.state._dataSource1[index].flag = false;
+            this.setState({})
+        }
+
     }
 
     handleChange(e, index) {
