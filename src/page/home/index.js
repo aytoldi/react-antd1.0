@@ -59,8 +59,9 @@ export default class Home extends React.Component {
                                 key="sub2"
                                 title={<span><Icon type="team"/><span>购物车</span></span>}
                             >
-                                <Menu.Item key="6">购物车</Menu.Item>
-                                <Menu.Item key="7">计算</Menu.Item>
+                                <Menu.Item key="6">
+                                    <Link to="/home/cart">购物车</Link>
+                                </Menu.Item>
                                 <Menu.Item key="8">
                                     <Link to="/home/todo">Todo</Link>
                                 </Menu.Item>
