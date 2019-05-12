@@ -117,7 +117,7 @@ class RowAdd extends React.Component {
     _handleOk1 = (e) => {
         console.log(e);
         this.setState({
-            _visible1: false,
+            _visible1: false
         });
     }
 
@@ -256,7 +256,7 @@ class FormContainer extends React.Component {
 
                 service.linkAdd(addApply).then((res) => {
                     if (res.data.code === 0) {
-                        history.replace('/home/rowAdd');
+                        history.push('/home/rowAdd');
                         self.props.hideModal(false, 1);
                         self.props.form.resetFields();
                     }

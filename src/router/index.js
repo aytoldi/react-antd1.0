@@ -18,6 +18,7 @@ import LineChart from "../component/Chart/line";
 import CircleChart from "../component/Chart/circle";
 import Todo from '../component/todo'
 import Cart from '../component/Cart/cart'
+import ComputedCart from '../component/Cart/computed'
 
 let history = createHashHistory();
 
@@ -53,6 +54,7 @@ class App extends React.Component {
                                         <PrivateRoute path={'/home/circle'} component={CircleChart}/>
                                         <PrivateRoute path={'/home/todo'} component={Todo}/>
                                         <PrivateRoute path={'/home/cart'} component={Cart}/>
+                                        <PrivateRoute path={'/home/computde'} component={ComputedCart}/>
                                         <Redirect to={'/home/pageList'}/>
                                     </Switch>
                                 </Home>

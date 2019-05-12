@@ -12,6 +12,7 @@ const SubMenu = Menu.SubMenu;
 
 
 import './index.less'
+import Banner from "../../assets/img/logo.png";
 
 export default class Home extends React.Component {
     state = {
@@ -33,7 +34,9 @@ export default class Home extends React.Component {
                         collapsed={this.state.collapsed}
                         onCollapse={this.onCollapse}
                     >
-                        <div className="logo"/>
+                        <div className="logo" style={{background:'#172850'}}>
+                            <img src={Banner}/>
+                        </div>
                         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                             <SubMenu
                                 key="sub1"
@@ -61,6 +64,9 @@ export default class Home extends React.Component {
                             >
                                 <Menu.Item key="6">
                                     <Link to="/home/cart">购物车</Link>
+                                </Menu.Item>
+                                <Menu.Item key="7">
+                                    <Link to="/home/computde">计算</Link>
                                 </Menu.Item>
                                 <Menu.Item key="8">
                                     <Link to="/home/todo">Todo</Link>

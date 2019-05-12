@@ -15,10 +15,6 @@ moment.locale('zh-cn');
 
 class RowEdit extends React.Component {
 
-    handleAllStatus = (flag) => {
-        return flag
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +26,8 @@ class RowEdit extends React.Component {
             resultSum: 0,
             flagStatus: false,
             footerStatus: false,
+            handleNum:0,
+            allNum:0,
             //thead
             _columns1: [
                 {
@@ -61,7 +59,10 @@ class RowEdit extends React.Component {
                     title: '单价',
                     key: 'price',
                     dataIndex: 'price',
-                    align: 'center'
+                    align: 'center',
+                    render: (text, record) => {
+                        return record.price.toFixed(2)
+                    }
                 },
                 {
                     title: '数量',
@@ -86,13 +87,19 @@ class RowEdit extends React.Component {
                     title: '计算',
                     dataIndex: 'sum',
                     key: 'sum',
-                    align: 'center'
+                    align: 'center',
+                    render: (text, record) => {
+                        return record.sum.toFixed(2)
+                    }
                 },
                 {
                     title: '操作',
                     key: '4',
                     align: 'center',
-                    dataIndex: 'operation'
+                    dataIndex: 'operation',
+                    render: (text, record,index) => {
+                        return (<Button onClick={()=>this.removeHandle(text, record,index)}>删除</Button>)
+                    }
                 }
             ],
             _dataSource1: [],//数据源
@@ -119,58 +126,139 @@ class RowEdit extends React.Component {
         })
     }
 
-    changeHandle(date, record, index) {
-        //Moment {_isAMomentObject: true, _i: "1985-08-11", _f: "YYYY-MM-DD", _isUTC: false, _pf: {…}, …}
-        this.setState({
-            dateState: date.format("YYYY-MM-DD")
-        })
-    }
-
-    handleInput(e) {
-        console.log(e, 123);
-        this.setState({
-            nameState: e.target.value
-        })
-    }
 
 
     removeHandle(text, record, index) {
+        console.log(record);
         let self = this;
-
         confirm({
             title: '删除操作',
             content: '你真的确定删除吗?',
             onOk() {
+                if(self.state._dataSource1[index].sum>0){
+                    self.state.resultSum-=self.state._dataSource1[index].sum;
+                    self.state.allNum-=self.state._dataSource1[index].number;
+                    self.state.handleNum--;
+                }
                 self.state._dataSource1.splice(index, 1);
                 self.setState({});
             },
             onCancel() {
             },
         });
-
     }
 
-
-    plusHandle(text, record, index) {
+    // 累加
+    plusHandle(text, record,index) {
+        //真是项目中不要使用index，使用record.id
         this.state._dataSource1[index].number++;
+        this.state.allNum++;
+        this.state._dataSource1[index].flag=true;
+        this.state._dataSource1[index].sum= this.state._dataSource1[index].number*this.state._dataSource1[index].price;
+        let newArr=this.state._dataSource1.every((item)=>{
+            return item.flag===true
+        })
+        this.state.flagStatus= newArr;
+        this.state.resultSum+=this.state._dataSource1[index].price;
         this.setState({})
     }
 
+    // 减少
     minusHandle(text, record, index) {
-        this.state._dataSource1[index].number--;
+        if(this.state._dataSource1[index].number<=0){
+            return;
+        }
+        console.log(record);
+        //真是项目中不要使用index，使用record.id
+        this.state._dataSource1[index].number>0?this.state._dataSource1[index].number--:0;
+        if(this.state._dataSource1[index].number>0){
+            this.state._dataSource1[index].sum= this.state._dataSource1[index].number*this.state._dataSource1[index].price;
+        }else{
+            this.state._dataSource1[index].sum=0;
+            this.state.handleNum--;
+            this.state._dataSource1[index].flag=false;
+        }
+        this.state.allNum--;
+        //如果一个false
+        this.state._dataSource1.forEach((item)=>{
+            if(!item.flag){
+                this.state.flagStatus= false;
+            }
+        })
+        this.state.resultSum-=this.state._dataSource1[index].price;
         this.setState({})
     }
 
+    // 全选
     allChangeHandle = (e) => {
+        this.state.flagStatus= e.target.checked;
+
+        if(e.target.checked){
+            this.state.handleNum=this.state._dataSource1.length;
+            this.state.allNum=this.state._dataSource1.length;
+            this.state.resultSum=0;
+            this.state._dataSource1.forEach((item)=>{
+                item.number=1;
+                item.flag=true
+                item.sum= item.number*item.price;
+                this.state.resultSum+=item.sum
+            })
+        }else{
+            this.state.flagStatus= e.target.checked;
+            this.state.handleNum=0;
+            this.state.allNum=0
+            this.state._dataSource1.forEach((item)=>{
+                item.number=0;
+                item.flag=false;
+                item.sum= item.number*item.price;
+                this.state.resultSum=0;
+            })
+        }
+
         this.setState({
-            flagStatus: e.target.checked
+            flagStatus: e.target.checked,
+
         })
     }
 
     itemHandleChange = (e, record, index) => {
-        console.log(e, record, index, 'world ...');
-        this.state._dataSource1[index].flag = e.target.checked
-        this.setState({})
+        console.log(record,56);
+        if(!e.target.checked){
+            // this.state._dataSource1[index].number=0;
+            this.state.handleNum--;
+            this.state.allNum-=this.state._dataSource1[index].number;
+            this.state.resultSum-=this.state._dataSource1[index].sum
+        }else{
+            this.state.handleNum++;
+            this.state.allNum++
+            this.state._dataSource1[index].number=1;
+            this.state.resultSum+=this.state._dataSource1[index].price
+        }
+
+        if(this.state.handleNum===this.state._dataSource1.length){
+            this.state.flagStatus= true;
+        }else{
+            this.state.flagStatus= false;
+        }
+
+        // let newData=this.state._dataSource1.filter((item)=>{
+        //     return item.flag===true
+        // });
+        // console.log(newData,149);
+
+        // this.state._dataSource1=newState
+        this.state._dataSource1[index].flag = e.target.checked;
+        this.state._dataSource1[index].sum= this.state._dataSource1[index].number*this.state._dataSource1[index].price;
+        this.setState((prevState)=>{
+            console.log(prevState,1);
+            return{
+                _dataSource1:prevState._dataSource1,
+                handleNum:prevState.handleNum,
+                resultSum:prevState.resultSum,
+                flagStatus:prevState.flagStatus,
+            }
+        })
+
     }
 
     render() {
@@ -190,9 +278,9 @@ class RowEdit extends React.Component {
                     <Col span={4}>
                         <Checkbox checked={this.state.flagStatus} onChange={this.allChangeHandle}>Checkbox</Checkbox>,
                     </Col>
-                    <Col span={6}>取消全选</Col>
-                    <Col span={6}>计算总价</Col>
-                    <Col span={6}>计算总数 {this.state.resultSum}</Col>
+                    <Col span={6}><span>点击的商品</span> <strong>{this.state.handleNum}</strong></Col>
+                    <Col span={6}><span>计算总价</span> <strong>{this.state.resultSum.toFixed(2)}</strong></Col>
+                    <Col span={6}><span>计算总数</span> <strong>{this.state.allNum}</strong> </Col>
                     <Col span={2}>
                         <Button>结账</Button>
                     </Col>
