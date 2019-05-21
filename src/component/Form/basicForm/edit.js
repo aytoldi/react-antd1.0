@@ -1,222 +1,13 @@
 import React from 'react';
-import {Table, Button, Modal, Form, Icon, Input, Row, Col, DatePicker, Radio, Select} from 'antd'
+import {Button, Form, Input, Row, Col, DatePicker, Radio, Select} from 'antd/lib/index'
 // 时间选择汉化
-import moment from 'moment'
+import moment from 'moment/moment'
 import 'moment/locale/zh-cn'
 
 moment.locale('zh-cn')
 import service from '../../../utils/service'
-import styles from "../../../page/login/index.less";
 import {createHashHistory} from 'history'//引入历史
 const history = createHashHistory();
-
-
-let defValue = {};
-
-
-class RowAdd extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            //thead
-            _columns1: [
-                {
-                    title: 'Id',
-                    key: 'id',
-                    dataIndex: 'id',
-                },
-                {
-                    title: '姓名',
-                    key: 'name',
-                    dataIndex: 'name',
-                }, {
-                    title: '城市',
-                    key: 'city',
-                    dataIndex: 'city',
-                    render: (index, row) => {
-                        if (row.city === 1) {
-                            return ('span', 'New York')
-                        } else if (row.city === 2) {
-                            return ('span', 'London')
-                        } else if (row.city === 3) {
-                            return ('span', 'America')
-                        }
-                    }
-                }, {
-                    title: '日期',
-                    key: 'date',
-                    dataIndex: 'date',
-                    align: 'center'
-                },
-                {
-                    title: '性别',
-                    key: 'sex',
-                    dataIndex: 'sex',
-                    render: (text, record) => {
-                        if (record.sex === 0) {
-                            return ('男')
-                        } else {
-                            return ('女')
-                        }
-                    }
-                },
-                {
-                    title: '操作',
-                    key: '4',
-                    dataIndex: 'operation',
-                    render: (text, record, index) => {
-                        return (<Button onClick={() => this.handleEdit(text, record, index)}>编辑</Button>)
-                    }
-                }
-            ],
-            _dataSource1: [],//数据源
-            _loading: false,  /*antd*/
-            _pagination1: false,
-            _visible1: false,
-            _visible2: false,
-            _initValue1: {}
-
-        }
-    }
-
-
-    componentDidMount() {
-        this.getData({
-            page: 1,
-            pageSize: 10
-        });
-    }
-
-    getData = (initParams) => {
-        service.renderPageList({...initParams}).then((res) => {
-            let newData = res.data.list.map((item, index) => {
-                item.key = item.id;
-                return item;
-            });
-
-            this.setState({
-                _dataSource1: newData
-            })
-        })
-    }
-
-    handleEdit(text, record, index) {
-        this._showModal1(record);
-    }
-
-    //1.
-
-    //获取数据的时候showModal中监听的
-    _showModal1 = (record) => {
-        this.setState({
-            _visible1: true,
-            _initValue1: record
-        });
-    }
-
-    _handleOk1 = (e) => {
-        console.log(e);
-        this.setState({
-            _visible1: false
-        });
-    }
-
-    _handleCancel1 = (e) => {
-        console.log(e);
-        this.setState({
-            _visible1: false,
-            _initValue1: {}//隐藏以后初始化
-        });
-    }
-
-
-    //2.
-    //获取数据的时候showModal中监听的
-    _showModal2 = () => {
-        this.setState({
-            _visible2: true,
-        });
-    }
-
-    _handleOk2 = (e) => {
-        console.log(e);
-        this.setState({
-            _visible2: false,
-        });
-    }
-
-    _handleCancel2 = (e) => {
-        console.log(e);
-        this.setState({
-            _visible2: false,
-            _initValue1: {}//隐藏以后初始化
-        });
-    }
-
-    addHandle() {
-        this._showModal2();
-    }
-
-    hideModal = (state, num) => {
-        if (num === 1) {
-            this.setState({
-                _visible1: false,
-                _initValue1: {}
-            });
-        } else {
-            this.setState({
-                _visible2: false,
-                _initValue1: {}
-            });
-        }
-
-    }
-
-
-    render() {
-        //destroyOnClose 非常重要的属性
-        return (
-            <div>
-                <Button onClick={() => this.addHandle()} style={{'marginBottom': '20px'}} type={"primary"}>添加</Button>
-                <Modal
-                    title="Basic Modal"
-                    visible={this.state._visible1}
-                    onOk={this._handleOk1}
-                    onCancel={this._handleCancel1}
-                    destroyOnClose={true}
-                    footer={null}
-                >
-                    <div>
-                        <FormContainer hideModal={this.hideModal} formContent={this.state._initValue1}/>
-                    </div>
-                </Modal>
-                <Modal
-                    title="Basic Modal"
-                    visible={this.state._visible2}
-                    onOk={this._handleOk2}
-                    onCancel={this._handleCancel2}
-                    destroyOnClose={true}
-                    footer={null}
-                >
-                    <div>
-                        <FormContainer hideModal={this.hideModal} formContent={this.state._initValue1}/>
-                    </div>
-                </Modal>
-                <Table
-                    //表格数据
-                    dataSource={this.state._dataSource1}
-                    //表格列名
-                    columns={this.state._columns1}
-                    //行的类名
-                    rowClassName={this.state._classname1}
-                    bordered={true}
-                    rowKey={record => record.id}
-                    pagination={this.state._pagination1}
-                />
-            </div>
-        )
-    }
-}
 
 
 class FormContainer extends React.Component {
@@ -224,13 +15,27 @@ class FormContainer extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props.formContent, 91);
-        this.state = {}
+        this.state = {
+            _formContent1: {
+                name: '',
+                city: 0,
+                date: new Date(),
+                sex: 0,
+            }
+        }
 
     }
 
-    componentWillMount() {
-        this.setState({
-            _formContent1: this.props.formContent,
+
+    componentDidMount() {
+        let match = this.props.match.params;
+        console.log(match, "match id...");
+        //我是second页面，路由id 是 {mathc.id}
+        service.linkEdit({id: match.id}).then((res) => {
+            console.log(res.data.data, 55);
+            this.setState({
+                _formContent1: res.data.data
+            })
         })
     }
 
@@ -256,8 +61,7 @@ class FormContainer extends React.Component {
 
                 service.linkAdd(addApply).then((res) => {
                     if (res.data.code === 0) {
-                        history.push('/home/rowAdd');
-                        self.props.hideModal(false, 1);
+                        history.replace('/home/basicForm');
                         self.props.form.resetFields();
                     }
                 })
@@ -265,6 +69,7 @@ class FormContainer extends React.Component {
         })
     }
 
+    //设置日期
     disabledEndDate = (endValue) => {
         let me = this;
         const startValue = this.state.currentTime;
@@ -281,11 +86,11 @@ class FormContainer extends React.Component {
         this.setState({currentTime: moment()});
     }
 
-
-    CancelHanlde() {
-        this.props.hideModal(false, 1);
-        this.props.hideModal(false, 2);
+    restForm() {
         this.props.form.resetFields();
+        // this.setState({
+        //     _formContent1:{}
+        // })
     }
 
 
@@ -326,7 +131,7 @@ class FormContainer extends React.Component {
         return (
             <Form {...formItemLayout} layout="vertical">
                 <Row>
-                    <Col span={22} offset={1}>
+                    <Col span={10} offset={1}>
                         <Form.Item label="姓名">
                             {
                                 getFieldDecorator('name',
@@ -357,10 +162,10 @@ class FormContainer extends React.Component {
                                         //     min:5, max: 10,
                                         //     message: '长度不在范围内'
                                         // },
-                                        // {
-                                        //     pattern: /^\w+$/,
-                                        //     message: '用户名必须为字母或数字'
-                                        // }
+                                        {
+                                            pattern: /^\w+$/,
+                                            message: '用户名必须为字母或数字'
+                                        }
                                     ],
                                     initialValue: city || ''
                                 })(
@@ -412,7 +217,7 @@ class FormContainer extends React.Component {
                                     <Button type="primary" block onClick={() => this.handleForm()}>提交</Button>
                                 </Col>
                                 <Col span={10} offset={4}>
-                                    <Button type="primary" block onClick={() => this.CancelHanlde()}>取消</Button>
+                                    <Button type="primary" block onClick={() => this.restForm()}>重置</Button>
                                 </Col>
                             </Row>
                         </Form.Item>
@@ -423,10 +228,6 @@ class FormContainer extends React.Component {
     }
 }
 
-function mapPropsToFields(props) {
-    console.log(props, 666);
-}
-
 FormContainer = Form.create()(FormContainer);
 
-export default RowAdd;
+export default FormContainer;

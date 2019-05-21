@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Button, Row} from 'antd'
+import {Table, Button, Row} from 'antd/lib/index'
 import service from '../../../utils/service'
 import {createHashHistory} from 'history'//引入历史
 const history = createHashHistory();
@@ -85,15 +85,15 @@ class RowLink extends React.Component {
     }
 
     addHandle(){
-        history.push('/home/linkAdd')
+        history.push('/home/addForm')
     }
 
     editHandle(record){
-        history.push(`/home/linkEdit/${record.id}`)
+        history.push(`/home/editForm/${record.id}`)
     }
 
     watchHandle(record){
-        history.push(`/home/linkWatch/${record.id}`)
+        history.push(`/home/watchForm/${record.id}`)
     }
 
 

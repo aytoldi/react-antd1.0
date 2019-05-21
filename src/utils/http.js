@@ -3,6 +3,8 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../store'
 
+//配置请求方法
+
 message.config({
     top: 300,
     duration: 2,
@@ -18,7 +20,6 @@ function success() {
     // 异步手动移除
     setTimeout(hide, 2000);
 };
-
 
 
 function destory() {

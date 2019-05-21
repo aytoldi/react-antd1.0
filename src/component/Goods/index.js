@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table, Button} from 'antd'
-import service from '../../../utils/service'
+import service from '../../utils/service'
 
 export default class PageList extends React.Component {
     constructor(props) {
@@ -42,54 +42,69 @@ export default class PageList extends React.Component {
                 }
             ],
             _dataSource1: [],//数据源
-            _loading: false,  /*antd*/
-            _pagination1: {
-                pageSize: 10,//每页条数(每列10行数据)
-                current: 1,//当前页数
-                total: 0,//数据总数
-                onChange: this._handleTableChange1
-            }
+            // _loading: false,  /*antd*/
+            // pageSize: 10,//每页条数(每列10行数据)
+            // current: 1,//当前页数
+            // total: 0,//数据总数
         }
     }
 
+    paramPage = {
+        page: 1
+    }
 
     componentDidMount() {
-        let initParams = {
-            page: 1
-        }
-        this.getData(initParams);
+        this.getData({page: 1});
     }
 
+    // pageHandle(res, callback) {
+    //     let page = {
+    //         onChange: (current) => {
+    //             callback(current);
+    //         },
+    //         current: res.data.page,
+    //         pageSize: res.data.result.pageSize,
+    //         total:  res.data.result.total,
+    //         showTotal: () => {
+    //             return `共${ res.data.total}跳`
+    //         }
+    //     }
+    //     return page;
+    // }
+
     getData = (initParams) => {
-        service.renderPageList({...initParams, pageSize: this.state._pagination1.pageSize}).then((res) => {
+        service.renderPageList({...initParams, pageSize: 10}).then((res) => {
             let newData = res.data.list.map((item, index) => {
                 item.key = item.id;
                 return item;
             });
-            let getTotal = res.data.total
+            // let page = initParams.page;
+            let self = this;
             // this._pagination1.total=res.data.total;
             this.setState({
-                _pagination1: {
-                    ...this.state._pagination1,
-                    total: getTotal
-                },
-                _dataSource1: newData
+                // total: res.data.total,
+                _dataSource1: newData,
+                pagination: {
+                    onChange: (page) => {
+                        console.log(page);
+                        self.getData({page: page});
+                    },
+                    total: res.data.total
+                }
             })
         })
     }
 
-    //每一次分页按钮点击的时候，改变当前的页数
-    _handleTableChange1 = (page, pageSize) => {
-        console.log(page, pageSize, 55);
-        this.getData({page});//改变请求接口的页码
-        //更新state
-        this.setState({
-            _pagination1: {
-                ...this.state._pagination1,
-                current: page,
-            }
-        })
-    }
+    // //每一次分页按钮点击的时候，改变当前的页数
+    // _handleTableChange1 = (page) => {
+    //     this.paramPage.page = page;
+    //     //更新state
+    //     this.setState({
+    //         current: this.paramPage.page,
+    //     }, () => {
+    //         this.getData(this.paramPage.page);//改变请求接口的页码
+    //     })
+    // }
 
     render() {
         return (
@@ -103,7 +118,7 @@ export default class PageList extends React.Component {
                     rowClassName={this.state._classname1}
                     bordered={true}
                     rowKey={record => record.id}
-                    pagination={this.state._pagination1}
+                    pagination={this.state.pagination}
                 />
             </React.Fragment>
         )

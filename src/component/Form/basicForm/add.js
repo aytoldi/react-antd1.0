@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Form, Input, Row, Col, DatePicker, Radio, Select} from 'antd'
+import {Button, Form, Input, Row, Col, DatePicker, Radio, Select} from 'antd/lib/index'
 // 时间选择汉化
-import moment from 'moment'
+import moment from 'moment/moment'
 import 'moment/locale/zh-cn'
 
 moment.locale('zh-cn')
@@ -26,16 +26,9 @@ class FormContainer extends React.Component {
 
     }
 
-
-    componentDidMount() {
-        let match = this.props.match.params;
-        console.log(match, "match id...");
-        //我是second页面，路由id 是 {mathc.id}
-        service.linkEdit({id: match.id}).then((res) => {
-            console.log(res.data.data, 55);
-            this.setState({
-                _formContent1: res.data.data
-            })
+    componentWillMount() {
+        this.setState({
+            _formContent1: this.state._formContent1,
         })
     }
 
@@ -61,7 +54,7 @@ class FormContainer extends React.Component {
 
                 service.linkAdd(addApply).then((res) => {
                     if (res.data.code === 0) {
-                        history.replace('/home/rowLink');
+                        history.replace('/home/basicForm');
                         self.props.form.resetFields();
                     }
                 })
@@ -88,9 +81,6 @@ class FormContainer extends React.Component {
 
     restForm() {
         this.props.form.resetFields();
-        // this.setState({
-        //     _formContent1:{}
-        // })
     }
 
 

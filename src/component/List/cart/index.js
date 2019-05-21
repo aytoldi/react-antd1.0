@@ -1,11 +1,11 @@
 import React from 'react';
-import {Table, Button, Row, Col, Input, Icon, Modal, DatePicker, Card, Checkbox} from 'antd'
+import {Table, Button, Row, Col, Input, Icon, Modal, DatePicker, Card, Checkbox} from 'antd/lib/index'
 import service from '../../../utils/service'
 import {createHashHistory} from 'history'//引入历史
 const history = createHashHistory();
 const confirm = Modal.confirm;
 // 默认语言为 en-US，如果你需要设置其他语言，推荐在入口文件全局设置 locale
-import moment from 'moment';
+import moment from 'moment/moment';
 import 'moment/locale/zh-cn';
 
 moment.locale('zh-cn');

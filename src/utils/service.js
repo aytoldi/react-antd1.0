@@ -1,8 +1,7 @@
 import requestAll from './http.js';
 import apiUrl from './request'
 
-
-
+//请求方法
 const service = {
     renderPageList(params) {
         return requestAll.get(apiUrl.list, params);
@@ -16,8 +15,12 @@ const service = {
     linkEdit() {
         return requestAll.get(apiUrl.linkEdit);
     },
-
-
+    city(params) {
+        return requestAll.get(apiUrl.city, params);
+    },
+    order(params) {
+        return requestAll.get(apiUrl.order, params);
+    }
 }
 
 export default service

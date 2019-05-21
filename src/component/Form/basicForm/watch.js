@@ -1,6 +1,6 @@
 import React from 'react';
 import service from "../../../utils/service";
-import moment from 'moment'
+import moment from 'moment/moment'
 
 export default class Watch extends React.Component {
     constructor(props) {

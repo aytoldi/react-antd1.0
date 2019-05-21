@@ -1,26 +1,20 @@
 import React from 'react';
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
+//路由权限组件
 import PrivateRoute from './PrivateRoute'
-import {createHashHistory} from 'history'//引入历史
+//引入历史
+import {createHashHistory} from 'history'
+
+let history = createHashHistory();
+//全局组件
 import ContainerPage from '../page'
 import Home from '../page/home'
 import Login from '../page/login'
-import PageList from "../component/User/pageList";
-import InnerEdit from "../component/User/innerEdit";
-import RowEdit from "../component/User/rowEdit";
-import RowAdd from "../component/User/rowAdd";
-import RowLink from "../component/User/rowLink";
-import LinkAdd from "../component/User/rowLink/add";
-import LinkEdit from "../component/User/rowLink/edit";
-import LinkWatch from "../component/User/rowLink/watch";
-import BoxChart from "../component/Chart/box";
-import LineChart from "../component/Chart/line";
-import CircleChart from "../component/Chart/circle";
-import Todo from '../component/todo'
-import Cart from '../component/Cart/cart'
-import ComputedCart from '../component/Cart/computed'
 
-let history = createHashHistory();
+//路由配置
+import menuConfig from '../config/menuConfig'
+
+let {routerConfig} = menuConfig;
 
 class App extends React.Component {
 
@@ -38,27 +32,24 @@ class App extends React.Component {
                     <ContainerPage>
                         <Switch>
                             <Route exact path={'/'} component={Login}/>
-                            <Route path="/home">
-                                <Home>
+                            <Route path="/home" render={() => {
+                                return (<Home>
                                     <Switch>
-                                        <PrivateRoute exact path={'/home'} component={PageList}/>
-                                        <PrivateRoute path={'/home/innerEdit'} component={InnerEdit}/>
-                                        <PrivateRoute path={'/home/rowEdit'} component={RowEdit}/>
-                                        <PrivateRoute path={'/home/rowAdd'} component={RowAdd}/>
-                                        <PrivateRoute path={'/home/rowLink'} component={RowLink}/>
-                                        <PrivateRoute path={'/home/linkAdd'} component={LinkAdd}/>
-                                        <PrivateRoute path={'/home/linkEdit/:id'} component={LinkEdit}/>
-                                        <PrivateRoute path={'/home/linkWatch/:id'} component={LinkWatch}/>
-                                        <PrivateRoute path={'/home/box'} component={BoxChart}/>
-                                        <PrivateRoute path={'/home/line'} component={LineChart}/>
-                                        <PrivateRoute path={'/home/circle'} component={CircleChart}/>
-                                        <PrivateRoute path={'/home/todo'} component={Todo}/>
-                                        <PrivateRoute path={'/home/cart'} component={Cart}/>
-                                        <PrivateRoute path={'/home/computde'} component={ComputedCart}/>
-                                        <Redirect to={'/home/pageList'}/>
+                                        {
+                                            routerConfig.map((item, index) => {
+                                                if (item.exact) {
+                                                    return <PrivateRoute key={index} exact path={item.key}
+                                                                         component={item.component}/>
+                                                } else {
+                                                    return <PrivateRoute key={index} path={item.key}
+                                                                         component={item.component}/>
+                                                }
+                                            })
+                                        }
+                                        <Redirect to={'/home'}/>
                                     </Switch>
-                                </Home>
-                            </Route>
+                                </Home>)
+                            }}/>
                             <Redirect to={'/'}/>
                         </Switch>
                     </ContainerPage>
