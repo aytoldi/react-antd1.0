@@ -19,6 +19,42 @@ function formatDate(date, fmt) {
     return fmt
 }
 
+
+function getDownload(url) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // 设置请求头，必须在open后添加
+    xhr.responseType = 'blob'; // 返回类型blob  blob 存储着大量的二进制数据
+    xhr.onload = function () {
+        if (this.status === 200) {
+            let blob = this.response;
+            let reader = new FileReader();
+            let getUrl = editUrl(this.responseURL);
+            reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+            reader.onload = function (e) {
+                let a = document.createElement('a'); // 转换完成，创建一个a标签用于下载
+                a.download = getUrl;
+                a.href = e.target.result;
+                a.click();
+            };
+        }
+    }
+    xhr.send(); // 发送ajax请求
+}
+
+function editUrl(myUrl) {
+    let arr = myUrl.split('/');
+    let obj = arr[arr.length - 1];
+    return obj;
+}
+
+/*
+document.getElementById('btn').onclick = function () {
+    const _url = 'http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf';
+    getDownload(_url);
+}
+*/
+
 export default {
     formatDate
 }
