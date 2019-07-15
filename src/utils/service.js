@@ -6,6 +6,9 @@ const service = {
     renderPageList(params) {
         return requestAll.get(apiUrl.list, params);
     },
+    menuList(params) {
+        return requestAll.get(apiUrl.menuList, params);
+    },
     cart() {
         return requestAll.get(apiUrl.cart);
     },

@@ -79,60 +79,6 @@ export default class Order extends React.Component {
         }
     }
 
-    /*    formList = [
-            {
-                type: 'SELECT',
-                label: '城市',
-                placeholder: '全部',
-                initialValue: '1',
-                field: 'city',
-                width: 100,
-                list: [
-                    {
-                        id: '0',
-                        name: '全部'
-                    },
-                    {
-                        id: '1',
-                        name: '深圳'
-                    },
-                    {
-                        id: '2',
-                        name: '北京'
-                    },
-                    {
-                        id: '3',
-                        name: '西安'
-                    }
-                ]
-            },
-            {
-                label: '订单时间',
-            },
-            {
-                type: 'SELECT',
-                label: '订单状态',
-                field: 'orderStatus',
-                placeholder: '全部',
-                initialValue: '1',
-                width: 100,
-                list: [
-                    {
-                        id: '0',
-                        name: '全部'
-                    },
-                    {
-                        id: '1',
-                        name: '进行中'
-                    },
-                    {
-                        id: '2',
-                        name: '行程结束'
-                    }
-                ]
-            }
-        ]*/
-
 
     componentDidMount() {
         this.getData({
@@ -143,7 +89,6 @@ export default class Order extends React.Component {
 
     getData = (obj) => {
         service.order(obj).then((res) => {
-            console.log(res.data.list, '555aaaddd');
             let newData = res.data.list.map((item, index) => {
                 item.key = item.orderId;
                 item.flag = false;

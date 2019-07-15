@@ -10,6 +10,7 @@ let request = {
     //城市
     city: mockUrl + 'city',
     order: mockUrl + 'order',
+    menuList:mockUrl+'menuList'
 }
 
 /*
