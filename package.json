@@ -24,7 +24,7 @@
     "css-loader": "^2.1.1",
     "echarts": "^4.2.1",
     "history": "^4.7.2",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "html-withimg-loader": "^0.1.16",
     "install": "^0.12.2",
     "less": "^3.9.0",
